@@ -1,0 +1,14 @@
+nav {
+	float : left;
+}
+
+a{
+  margin-left: 10px;
+  margin-right: 10px;
+}
+.navBar{
+	overflow: auto;
+	margin: 20px 20px 0 20px;
+	font-size: 20px;
+
+}
