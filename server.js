@@ -209,6 +209,10 @@ if (process.env.NODE_ENV === 'production') {
   //   res.sendFile(path.join(__dirname, './client/public/index.html'));
   // });
 
+//******************************************************************************************* 
+//  Starting FRESH
+//*******************************************************************************************  
+
     app.get("/articles/favorite/", function(req, res) {
     //sort articles
     // db.articles.aggregate(
@@ -231,6 +235,7 @@ if (process.env.NODE_ENV === 'production') {
         }
       });
   });
+
 
   app.delete("/articles/favorite/:id", function(req, res) {
     var id = req.params.id;
