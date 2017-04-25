@@ -176,7 +176,7 @@ if (process.env.NODE_ENV === 'production') {
 
  app.get("/nyt/:q", function(req, res) {
 
-    var query = "https://api.nytimes.com/svc/search/v2/articlesearch.json/?q=" + req.params.q +"?api-key=1ea4346188f64d96813b056297a0a9e9";
+    var query = "https://api.nytimes.com/svc/search/v2/articlesearch.json?q=" + req.params.q +"&api-key=1ea4346188f64d96813b056297a0a9e9";
 
     // request(query, function (error, response, body) {
     //   res.json(response);
