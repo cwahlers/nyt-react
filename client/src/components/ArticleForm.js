@@ -18,7 +18,7 @@ const ArticleForm = (props) => (
     name="currentUrl"
     defaultValue={props.url}
     placeholder="insert url" 
-     />
+     /> 
 
     {/* inline conditional rendering: */}
     <input type="submit" value={props.edit ? "Update" : "Save" } />

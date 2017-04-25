@@ -3,7 +3,7 @@ import {
   BrowserRouter as Router,
   Route,
 } from 'react-router-dom'
-import SongView from './ArticleView'
+import ArticleView from './ArticleView'
 import Name from './Name'
 import Nav from './Nav'
 import App from '../App'
@@ -14,7 +14,7 @@ const Home = (props) => (
 		<Nav />
 		<Route exact path="/" component={App} />
     <Route exact path="/name" component={Name} />
-		<Route path="/articles/:id" component={SongView} />
+		<Route path="/articles/:id" component={ArticleView} />
 	</div>
 </Router>
 )

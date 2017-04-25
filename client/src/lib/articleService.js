@@ -11,6 +11,11 @@ export const __loadArticle = (_id) => {
     .then(res => res.json())
 }
 
+export const __loadNytArticles = () => {
+  return fetch('${baseUrl}/nyt/${searchtitle}')
+    .then(res => res.json())
+}
+
 export const __createArticle = (article) => {
   return fetch(baseUrl, {
     method: 'POST',

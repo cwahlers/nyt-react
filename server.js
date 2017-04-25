@@ -3,7 +3,6 @@ var express = require("express");
 var mongojs = require("mongojs");
 var logger = require("morgan");
 var bodyParser = require('body-parser');
-var spotify = require("spotify");
 var omdb  = require("omdb");
 var request = require("request");
 
@@ -16,7 +15,7 @@ app.use(logger("dev"));
 app.use(bodyParser());
 
 // Database configuration
-var databaseUrl = process.env.MONGODB_URI || "nytreat_db";
+var databaseUrl = process.env.MONGODB_URI || "nytreact_db";
 var collections = ["articles"];
 
 // Hook mongojs config to db variable
@@ -48,37 +47,35 @@ if (process.env.NODE_ENV === 'production') {
   });
 
 
-// songs Routes
+// articles routes
 // ======
   //documentation for mongojs:
     //https://github.com/mafintosh/mongojs
 
   app.get("/articles", function(req, res) {
-
     //sort songs
-    db.articles.aggregate(
-       [
-         { $sort : { votes : -1 } }
-       ], function(error, articles){
+    // db.articles.aggregate(
+    //    [
+    //      { $sort : { votes : -1 } }
+    //    ], function(error, articles){
 
-        res.json(articles);
-    });
-
+    //     res.json(articles);
+    // });
     // Find all songs in the songs collection
-      // db.songs.find({}, function(error, songs) {
-      //   // Log any errors
-      //   if (error) {
-      //     console.log(error);
-      //   }
-      //   // Otherwise, send json of the songs back to user
-      //   // This will fire off the success function of the ajax request
-      //   else {
-      //     //pretend that it takes 5 seconds to get the songs back
-      //     //setTimeout(function(){
-      //       res.json(songs);
-      //     //}, 5000)
-      //   }
-      // });
+      db.articles.find({}, function(error, articles) {
+        // Log any errors
+        if (error) {
+          console.log(error);
+        }
+        // Otherwise, send json of the songs back to user
+        // This will fire off the success function of the ajax request
+        else {
+          //pretend that it takes 5 seconds to get the songs back
+          //setTimeout(function(){
+            res.json(articles);
+          //}, 5000)
+        }
+      });
   });
 
   // Handle form submission, save submission to mongo
@@ -177,7 +174,7 @@ if (process.env.NODE_ENV === 'production') {
   });
 
 
- app.get("/articles/:q", function(req, res) {
+ app.get("/nyt/:q", function(req, res) {
 
     var query = "https://api.nytimes.com/svc/search/v2/articlesearch.json/?q=" + req.params.q +"?api-key=1ea4346188f64d96813b056297a0a9e9";
 
@@ -209,9 +206,9 @@ if (process.env.NODE_ENV === 'production') {
   })
 
   
-  app.get('*', function(req, res) {
-    res.sendFile(path.join(__dirname, './client/public/index.html'));
-  });
+  // app.get('*', function(req, res) {
+  //   res.sendFile(path.join(__dirname, './client/public/index.html'));
+  // });
 
 // Listen on port 3001
   app.listen(PORT, function() {
