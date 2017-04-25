@@ -68,6 +68,7 @@
 
 ### Functions and Methods:
 + removeResult – removes the article from the current search results list (nytResults)      
++ addToFavorites - adds article to database and favoriteArticles
 
 ### State:         
 

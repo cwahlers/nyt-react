@@ -82,7 +82,7 @@ if (process.env.NODE_ENV === 'production') {
   app.post("/articles", function(req, res) {
     
     // Insert the song into the songs collection
-    db.songs.insert(req.body, function(error, savedArticle) {
+    db.articles.insert(req.body, function(error, savedArticle) {
       // Log any errors
       if (error) {
         console.log(error);
@@ -95,7 +95,7 @@ if (process.env.NODE_ENV === 'production') {
 
   //get one article
   app.get("/articles/one/:id", function(req, res) {
-    db.songs.findOne({
+    db.articles.findOne({
       "_id": mongojs.ObjectId(req.params.id)
     }, function(error, oneArticle) {
       if (error) {
@@ -204,11 +204,89 @@ if (process.env.NODE_ENV === 'production') {
 //});
 
   })
-
   
   // app.get('*', function(req, res) {
   //   res.sendFile(path.join(__dirname, './client/public/index.html'));
   // });
+
+    app.get("/articles/favorite/", function(req, res) {
+    //sort articles
+    // db.articles.aggregate(
+    //    [
+    //      { $sort : { votes : -1 } }
+    //    ], function(error, articles){
+
+    //     res.json(articles);
+    // });
+    // Find all songs in the songs collection
+      db.articles.find({}, function(error, articles) {
+        // Log any errors
+        if (error) {
+          console.log(error);
+        }
+        // Otherwise, send json of the songs back to user
+        // This will fire off the success function of the ajax request
+        else {
+          res.json(articles);
+        }
+      });
+  });
+
+  app.delete("/articles/favorite/:id", function(req, res) {
+    var id = req.params.id;
+
+    db.articles.remove({
+      "_id": mongojs.ObjectID(id)
+    }, function(error, removed) {
+      if (error) {
+        res.send(error);
+      }else {
+        res.json(id);
+      }
+    });
+  });
+
+  
+  app.put("/articles/favorite/votes/:id/:direction", function(req, res){
+    var voteChange = 0;
+    if (req.params.direction == 'up') voteChange = 1;
+    else voteChange = -1; 
+
+    //this is wrong I want to grab the current votes and increment by 1
+    db.articles.findAndModify({
+      query: { 
+        "_id": mongojs.ObjectId(req.params.id) 
+      },
+      update: { $inc: { votes: voteChange} },  
+      new: true
+      }, function (err, editedArticle) {
+          res.json(editedArticle);
+      });
+  });
+
+
+  app.get("/articles/search/:q", function(req, res) {
+
+    var query = "https://api.nytimes.com/svc/search/v2/articlesearch.json/?q=" + req.params.q +"?api-key=1ea4346188f64d96813b056297a0a9e9";
+    request(query, function (error, response, body) {
+      res.json(JSON.parse(response.body));
+    });
+  })
+
+
+  app.post("/articles/results", function(req, res) {
+    
+    // Insert the song into the songs collection
+    db.articles.insert(req.body, function(error, savedArticle) {
+      // Log any errors
+      if (error) {
+        console.log(error);
+      }else {
+        //the reason why we are sending the savedSong back is because we now have an _id to give to the client
+        res.json(savedArticle);
+      }
+    });
+  });
 
 // Listen on port 3001
   app.listen(PORT, function() {
