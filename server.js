@@ -20,7 +20,6 @@ var collections = ["articles"];
 
 // Hook mongojs config to db variable
 var db = mongojs(databaseUrl , collections);
-
 // Log any mongojs errors to console
 db.on("error", function(error) {
   console.log("Database Error:", error);
@@ -106,7 +105,7 @@ if (process.env.NODE_ENV === 'production') {
     });
   });
 
-  //update a song
+  //update an article
   app.put("/articles/:id", function(req, res) {
     //if we use this then we won't get the updated document back
     /* 
@@ -161,6 +160,7 @@ if (process.env.NODE_ENV === 'production') {
 
   app.delete("/articles/:id", function(req, res) {
     var id = req.params.id;
+    console.log(id);
 
     db.articles.remove({
       "_id": mongojs.ObjectID(id)
@@ -174,124 +174,20 @@ if (process.env.NODE_ENV === 'production') {
   });
 
 
- app.get("/nyt/:q", function(req, res) {
+ app.get("/articles/nyt/:q", function(req, res) {
 
     var query = "https://api.nytimes.com/svc/search/v2/articlesearch.json?q=" + req.params.q +"&api-key=1ea4346188f64d96813b056297a0a9e9";
 
-    // request(query, function (error, response, body) {
-    //   res.json(response);
     request(query, function (error, response, body) {
-      res.json(JSON.parse(response.body));
-      // console.log('error:', error); // Print the error if one occurred 
-      // console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received 
-      // console.log('body:', body); // Print the HTML for the Google homepage. 
-    });
-
-    // omdb.search(req.params.movie, function(err, movies) {
-    // if(err) {
-    //     return console.error(err);
-    // }
- 
-    // if(movies.length < 1) {
-    //     return console.log('No movies were found!');
-    // }
- 
-    // movies.forEach(function(movie) {
-    //     //console.log('%s (%d)', movie.title, movie.year);
-    //     res.json(movie);
-    // });
- 
-//});
-
-  })
-  
-  // app.get('*', function(req, res) {
-  //   res.sendFile(path.join(__dirname, './client/public/index.html'));
-  // });
-
-//******************************************************************************************* 
-//  Starting FRESH
-//*******************************************************************************************  
-
-    app.get("/articles/favorite/", function(req, res) {
-    //sort articles
-    // db.articles.aggregate(
-    //    [
-    //      { $sort : { votes : -1 } }
-    //    ], function(error, articles){
-
-    //     res.json(articles);
-    // });
-    // Find all songs in the songs collection
-      db.articles.find({}, function(error, articles) {
-        // Log any errors
-        if (error) {
-          console.log(error);
-        }
-        // Otherwise, send json of the songs back to user
-        // This will fire off the success function of the ajax request
-        else {
-          res.json(articles);
-        }
-      });
-  });
-
-
-  app.delete("/articles/favorite/:id", function(req, res) {
-    var id = req.params.id;
-
-    db.articles.remove({
-      "_id": mongojs.ObjectID(id)
-    }, function(error, removed) {
-      if (error) {
-        res.send(error);
-      }else {
-        res.json(id);
-      }
-    });
-  });
-
-  
-  app.put("/articles/favorite/votes/:id/:direction", function(req, res){
-    var voteChange = 0;
-    if (req.params.direction == 'up') voteChange = 1;
-    else voteChange = -1; 
-
-    //this is wrong I want to grab the current votes and increment by 1
-    db.articles.findAndModify({
-      query: { 
-        "_id": mongojs.ObjectId(req.params.id) 
-      },
-      update: { $inc: { votes: voteChange} },  
-      new: true
-      }, function (err, editedArticle) {
-          res.json(editedArticle);
-      });
-  });
-
-
-  app.get("/articles/search/:q", function(req, res) {
-
-    var query = "https://api.nytimes.com/svc/search/v2/articlesearch.json?q=" + req.params.q +"&api-key=1ea4346188f64d96813b056297a0a9e9";
-    request(query, function (error, response, body) {
-      res.json(JSON.parse(response.body));
+      let ret = [];
+      let results = JSON.parse(response.body);
+      let arts = results.response.docs;
+      arts.forEach(function (art){
+        ret.push({_id: art._id, title: art.snippet, date: art.pub_date, url: art.web_url});
+      })
+      res.json(ret);
     });
   })
-
-
-  app.post("/articles/results", function(req, res) {
-    
-    // Insert the song into the songs collection
-    db.articles.insert(req.body, function(error, savedArticle) {
-      // Log any errors
-      if (error) {
-        console.log(error);
-      }else {
-        //the reason why we are sending the savedSong back is because we now have an _id to give to the client
-        res.json(savedArticle);
-      }
-    });
-  });
 
 // Listen on port 3001
   app.listen(PORT, function() {

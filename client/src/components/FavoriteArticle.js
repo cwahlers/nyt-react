@@ -67,8 +67,8 @@ class FavoriteArticle extends Component {
 
 FavoriteArticle.propTypes = {
   articleId: React.PropTypes.string.isRequired,
-	title: React.PropTypes.string.isRequired,
-	date: React.PropTypes.string,
+  title: React.PropTypes.string.isRequired,
+  date: React.PropTypes.string,
   url: React.PropTypes.string,
 }
 

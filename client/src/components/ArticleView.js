@@ -32,8 +32,8 @@ class ArticleView extends Component {
 
 		  	<br />
 		  	<br />
-
 		  	{this.state.nytData.map((article, index) => <NytView key={index} {...article} />)}
+		  	
 		  </div>
 		);
 	}

@@ -4,7 +4,8 @@ const ArticleSearch = (props) => (
   <form id="ArticleSearch" onSubmit={props.handleSubmit}>
     <input type="text" 
     name="title"
-    defaultValue={props.title}
+    value={props.title}
+    onChange={props.handleInputChange}
     placeholder="search title" 
      />
 

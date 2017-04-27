@@ -20,6 +20,7 @@ class Article extends Component {
       //so you don't need these lines here
     //--
     this._handleEdit = this._handleEdit.bind(this);
+    //this._handleUpdate = this._handleUpdate.bind(this);
     //--
   }
 
@@ -34,14 +35,13 @@ class Article extends Component {
     if (this.state.edit) {
       displayEditForm = <ArticleSearch 
           title={this.state.currentTitle || this.props.title}
-          handleSubmit={this.props.handleUpdate}
-          edit={true}
+          handleSubmit={this.props.handleSubmit}
 
            />
     }
 
     return (
-      <li className="article">
+      <div className="article">
         { /* this.props.key */ } {/* Warning: Cat: `key` is not a prop. Trying to access it will result in `undefined` being returned. If you need to access the same value within the child component, you should pass it as a different prop. */}
         
         {displayEditForm}
@@ -63,15 +63,15 @@ class Article extends Component {
         {this.props.votes}
         &nbsp;&nbsp;
         <span className='vote-item'><a href='#' data-articleid={this.props.articleId} data-direction="down" onClick={this.props.handleVote}>\/</a></span>
-      </li>
+      </div>
     );
   }
 }
 
 Article.propTypes = {
   articleId: React.PropTypes.string.isRequired,
-	title: React.PropTypes.string.isRequired,
-	date: React.PropTypes.string,
+  title: React.PropTypes.string,
+  date: React.PropTypes.string,
   url: React.PropTypes.string,
 }
 
