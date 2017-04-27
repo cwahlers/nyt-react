@@ -29,23 +29,20 @@ class NytArticle extends Component {
  
   render() {
     return (
-      <div className="nytArticle">
+      <table className='table table-bordered'>
         { /* this.props.key */ } {/* Warning: Cat: `key` is not a prop. Trying to access it will result in `undefined` being returned. If you need to access the same value within the child component, you should pass it as a different prop. */}
-
-        &nbsp;&nbsp;&nbsp;&nbsp;
-        <span className='delete-item'><a href='#' data-nytarticleid={this.props.nytArticleId} onClick={this.props.handleRemove}>X</a></span>
+        <p className='delete-item'><a href='#' data-nytarticleid={this.props.nytArticleId} onClick={this.props.handleRemove}>X</a></p>
         &nbsp;&nbsp;&nbsp;&nbsp;
               
-        <strong>Title:</strong> {this.props.title} {/* better to use artist from props because state in this component doesn't reflect the artist from the database in mongo */}
-        &nbsp;&nbsp;
-        <strong>Date:</strong> {this.props.date} {/* better to use songName from props because state in this component doesn't reflect the songName from the database in mongo */}
+        <strong>Title:</strong> {this.props.title} 
+        <strong>Date:</strong> {this.props.date} 
         &nbsp;&nbsp;&nbsp;&nbsp;
-        <strong>URL:</strong> {this.props.url} {/* better to use songName from props because state in this component doesn't reflect the songName from the database in mongo */}
+        <strong>URL:</strong> {this.props.url} 
         &nbsp;&nbsp;&nbsp;&nbsp;
-        <span className='edit-item'><a href='#' 
-        data-nytarticleid={this.props.nytId} onClick={this.handleAdd}>Add</a></span>
-        &nbsp;&nbsp;&nbsp;&nbsp;
-      </div>
+        <p className='edit-item'><a href='#' 
+        data-nytarticleid={this.props.nytId} onClick={this.handleAdd}>Add</a></p>
+      </table>
+
     );
   }
 }

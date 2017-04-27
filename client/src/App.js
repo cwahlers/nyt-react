@@ -91,7 +91,6 @@ class App extends Component {
         <br /><br />
 
         {/* Articles returned from NYT search */}
-        
           {this.state.nytArticles.map((nytArticle, ind) => <NytArticle 
             key={nytArticle._id} 
             nytId={nytArticle._id} 

@@ -41,7 +41,8 @@ class Article extends Component {
     }
 
     return (
-      <div className="article">
+      <table className='table table-bordered'>
+      {/* <div className="article"> */}
         { /* this.props.key */ } {/* Warning: Cat: `key` is not a prop. Trying to access it will result in `undefined` being returned. If you need to access the same value within the child component, you should pass it as a different prop. */}
         
         {displayEditForm}
@@ -63,7 +64,7 @@ class Article extends Component {
         {this.props.votes}
         &nbsp;&nbsp;
         <span className='vote-item'><a href='#' data-articleid={this.props.articleId} data-direction="down" onClick={this.props.handleVote}>\/</a></span>
-      </div>
+      </table>
     );
   }
 }
